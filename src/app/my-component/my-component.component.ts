@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Pokemon} from '../pokemon';
+import {PokeDetail, Pokemon} from '../pokemon';
 import {PokeAPIServiceService} from '../poke-apiservice.service';
+import {PokeShareInfoService} from '../poke-share-info.service';
 
 @Component({
   selector: 'app-my-component',
@@ -9,13 +10,12 @@ import {PokeAPIServiceService} from '../poke-apiservice.service';
   providers: [PokeAPIServiceService]
 })
 export class MyComponentComponent implements OnInit {
-
-
   id: string;
   pokes: Pokemon[] = [];
   selectedPokeId: string;
   searchPokeName: string = '';
-  constructor(private pokeService:PokeAPIServiceService) {
+  pokeDetail!: PokeDetail;
+  constructor(private pokeService:PokeAPIServiceService,private pokeShareInfoService: PokeShareInfoService) {
     this.id = '';
     this.selectedPokeId='';
     this.searchPokeName='';
@@ -31,7 +31,13 @@ export class MyComponentComponent implements OnInit {
   }
 
   go(){
-    console.log(this.selectedPokeId);
+
+    if (this.selectedPokeId !=''){
+     this.pokeService.getPokemonsInfo(this.selectedPokeId).subscribe(data => {
+         this.pokeDetail = data;
+         this.pokeShareInfoService.setValue(this.selectedPokeId);
+       });
+    }
   }
 
 }

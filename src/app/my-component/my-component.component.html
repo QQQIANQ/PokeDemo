@@ -16,3 +16,10 @@ Mon pokemon selectionné est: {{selectedPokeId}}
 </select>
 <br>
 <button (click)="go()">GO</button>
+<br>
+<div *ngIf="pokeDetail">
+
+  <app-pokedetail [detail]="pokeDetail"></app-pokedetail>
+
+
+</div>
